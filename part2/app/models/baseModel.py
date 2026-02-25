@@ -24,5 +24,5 @@ class BaseModel:
         
     
     def is_between(self, name, value, min, max):
-        if not min < value < max:
+        if not min <= value <= max:
             raise ValueError(f"{name} must be between {min} and {max}.")
