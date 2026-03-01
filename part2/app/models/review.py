@@ -30,7 +30,7 @@ class Review(BaseModel):
 	def rating(self, value):
 		if not isinstance(value, int):
 			raise TypeError("Rating must be an integer")
-		super().is_between('Rating', value, 1, 6)
+		super().is_between('Rating', value, 1, 5) 
 		self.__rating = value
 
 	@property
