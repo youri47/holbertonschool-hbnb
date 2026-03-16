@@ -1,8 +1,16 @@
 from app.models.baseModel import BaseModel
-from .user import User
+from app import db
 
 class Place(BaseModel):
-    def __init__(self, title: str, price: float, latitude: str, longitude, owner, description=None):
+    __tablename__ = 'places'
+
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(500), nullable=True)
+    price = db.Column(db.Float, nullable=False)
+    latitude = db.Column(db.Float, nullable=False)
+    longitude = db.Column(db.Float, nullable=False)
+
+    def __init__(self, title, price, latitude, longitude, owner, description=None):
         super().__init__()
         self.title = title
         self.description = description
@@ -10,13 +18,13 @@ class Place(BaseModel):
         self.latitude = latitude
         self.longitude = longitude
         self.owner = owner
-        self.reviews = []  # List to store related reviews
-        self.amenities = []  # List to store related amenities
+        self.reviews = []
+        self.amenities = []
 
     @property
     def title(self):
         return self.__title
-    
+
     @title.setter
     def title(self, value):
         if not value:
@@ -29,7 +37,7 @@ class Place(BaseModel):
     @property
     def price(self):
         return self.__price
-    
+
     @price.setter
     def price(self, value):
         if not isinstance(value, float) and not isinstance(value, int):
@@ -41,18 +49,18 @@ class Place(BaseModel):
     @property
     def latitude(self):
         return self.__latitude
-    
+
     @latitude.setter
     def latitude(self, value):
         if not isinstance(value, float):
             raise TypeError("Latitude must be a float")
         super().is_between("latitude", value, -90, 90)
         self.__latitude = value
-    
+
     @property
     def longitude(self):
         return self.__longitude
-    
+
     @longitude.setter
     def longitude(self, value):
         if not isinstance(value, float):
@@ -63,23 +71,21 @@ class Place(BaseModel):
     @property
     def owner(self):
         return self.__owner
-    
+
     @owner.setter
     def owner(self, value):
+        from app.models.user import User
         if not isinstance(value, User):
             raise TypeError("Owner must be a user instance")
         self.__owner = value
 
     def add_review(self, review):
-        """Add a review to the place."""
         self.reviews.append(review)
-    
+
     def delete_review(self, review):
-        """Add an amenity to the place."""
         self.reviews.remove(review)
 
     def add_amenity(self, amenity):
-        """Add an amenity to the place."""
         self.amenities.append(amenity)
 
     def to_dict(self):
@@ -92,7 +98,7 @@ class Place(BaseModel):
             'longitude': self.longitude,
             'owner_id': self.owner.id
         }
-    
+
     def to_dict_list(self):
         return {
             'id': self.id,
