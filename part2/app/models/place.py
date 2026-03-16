@@ -1,5 +1,6 @@
 from app.models.baseModel import BaseModel
 from app import db
+from app.models.place_amenity import place_amenity
 
 class Place(BaseModel):
     __tablename__ = 'places'
@@ -9,6 +10,12 @@ class Place(BaseModel):
     price = db.Column(db.Float, nullable=False)
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
+    owner_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
+
+    owner_rel = db.relationship('User', back_populates='places')          # renamed
+    reviews = db.relationship('Review', back_populates='place_rel', lazy=True)
+    amenities = db.relationship('Amenity', secondary=place_amenity, lazy='subquery',
+                                backref=db.backref('places', lazy=True))
 
     def __init__(self, title, price, latitude, longitude, owner, description=None):
         super().__init__()
@@ -18,8 +25,6 @@ class Place(BaseModel):
         self.latitude = latitude
         self.longitude = longitude
         self.owner = owner
-        self.reviews = []
-        self.amenities = []
 
     @property
     def title(self):
@@ -108,6 +113,6 @@ class Place(BaseModel):
             'latitude': self.latitude,
             'longitude': self.longitude,
             'owner': self.owner.to_dict(),
-            'amenities': self.amenities,
-            'reviews': self.reviews
+            'amenities': [a.to_dict() for a in self.amenities],
+            'reviews': [r.to_dict() for r in self.reviews]
         }

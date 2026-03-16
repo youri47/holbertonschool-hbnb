@@ -3,11 +3,17 @@ from datetime import datetime
 from app import db
 
 class BaseModel(db.Model):
-    __abstract__ = True  # SQLAlchemy won't create a table for BaseModel itself
+    __abstract__ = True
 
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    def __init__(self):
+        super().__init__()
+        self.id = str(uuid.uuid4())  # set explicitly in __init__
+        self.created_at = datetime.utcnow()
+        self.updated_at = datetime.utcnow()
 
     def save(self):
         self.updated_at = datetime.utcnow()

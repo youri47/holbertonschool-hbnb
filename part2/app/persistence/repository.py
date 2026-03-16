@@ -47,6 +47,7 @@ class SQLAlchemyRepository(Repository):
         from app import db
         db.session.add(obj)
         db.session.commit()
+        db.session.refresh(obj)
 
     def get(self, obj_id):
         return self.model.query.get(obj_id)

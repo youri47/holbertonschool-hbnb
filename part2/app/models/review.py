@@ -6,6 +6,11 @@ class Review(BaseModel):
 
     text = db.Column(db.String(500), nullable=False)
     rating = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
+    place_id = db.Column(db.String(36), db.ForeignKey('places.id'), nullable=False)
+
+    user_rel = db.relationship('User', back_populates='reviews')    # renamed
+    place_rel = db.relationship('Place', back_populates='reviews')  # renamed
 
     def __init__(self, text, rating, place, user):
         super().__init__()
