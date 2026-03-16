@@ -1,5 +1,6 @@
 from app.models.baseModel import BaseModel
 from app import db, bcrypt
+from sqlalchemy.orm import validates
 import re
 
 class User(BaseModel):
@@ -24,54 +25,40 @@ class User(BaseModel):
         self.is_admin = is_admin
         self.password = password
 
-    @property
-    def first_name(self):
-        return self.__first_name
-
-    @first_name.setter
-    def first_name(self, value):
+    @validates('first_name')
+    def validate_first_name(self, key, value):
         if not isinstance(value, str):
             raise TypeError("First name must be a string")
-        super().is_max_length('First name', value, 50)
-        self.__first_name = value
+        if len(value) > 50:
+            raise ValueError("First name must be 50 characters max.")
+        return value
 
-    @property
-    def last_name(self):
-        return self.__last_name
-
-    @last_name.setter
-    def last_name(self, value):
+    @validates('last_name')
+    def validate_last_name(self, key, value):
         if not isinstance(value, str):
             raise TypeError("Last name must be a string")
-        super().is_max_length('Last name', value, 50)
-        self.__last_name = value
+        if len(value) > 50:
+            raise ValueError("Last name must be 50 characters max.")
+        return value
 
-    @property
-    def email(self):
-        return self.__email
-
-    @email.setter
-    def email(self, value):
+    @validates('email')
+    def validate_email(self, key, value):
         if not isinstance(value, str):
             raise TypeError("Email must be a string")
         if not re.match(r"[^@]+@[^@]+\.[^@]+", value):
             raise ValueError("Invalid email format")
         if value in User.emails:
             raise ValueError("Email already exists")
-        if hasattr(self, "_User__email"):
-            User.emails.discard(self.__email)
-        self.__email = value
+        if hasattr(self, 'email') and self.email:
+            User.emails.discard(self.email)
         User.emails.add(value)
+        return value
 
-    @property
-    def is_admin(self):
-        return self.__is_admin
-
-    @is_admin.setter
-    def is_admin(self, value):
+    @validates('is_admin')
+    def validate_is_admin(self, key, value):
         if not isinstance(value, bool):
             raise TypeError("Is Admin must be a boolean")
-        self.__is_admin = value
+        return value
 
     def add_place(self, place):
         self.places.append(place)
