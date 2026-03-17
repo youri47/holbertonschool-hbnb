@@ -1,4 +1,4 @@
-from app.persistence.repository import InMemoryRepository, SQLAlchemyRepository
+from app.persistence.repository import SQLAlchemyRepository
 from app.models.user import User
 from app.models.amenity import Amenity
 from app.models.place import Place
@@ -13,10 +13,10 @@ class UserRepository(SQLAlchemyRepository):
 
 class HBnBFacade:
     def __init__(self):
-        self.user_repo = UserRepository()
-        self.amenity_repo = InMemoryRepository()
-        self.place_repo = InMemoryRepository()
-        self.review_repo = InMemoryRepository()
+        self.user_repo    = UserRepository()
+        self.amenity_repo = SQLAlchemyRepository(Amenity)
+        self.place_repo   = SQLAlchemyRepository(Place)
+        self.review_repo  = SQLAlchemyRepository(Review)
 
     # USER
     def create_user(self, user_data):
@@ -56,23 +56,25 @@ class HBnBFacade:
 
     # PLACE
     def create_place(self, place_data):
-        user = self.user_repo.get_by_attribute('id', place_data['owner_id'])
+        owner_id = place_data.pop('owner_id', None)
+        amenities = place_data.pop('amenities', None)
+
+        user = self.user_repo.get(owner_id)
         if not user:
             raise KeyError('Invalid input data')
-        del place_data['owner_id']
-        place_data['owner'] = user
-        amenities = place_data.pop('amenities', None)
-        if amenities:
-            for a in amenities:
-                amenity = self.get_amenity(a['id'])
-                if not amenity:
-                    raise KeyError('Invalid input data')
+
         place = Place(**place_data)
+        place.owner_id = owner_id
         self.place_repo.add(place)
-        user.add_place(place)
+
         if amenities:
-            for amenity in amenities:
-                place.add_amenity(amenity)
+            for amenity_id in amenities:
+                amenity = self.amenity_repo.get(amenity_id)
+                if amenity:
+                    place.amenities.append(amenity)
+            from app import db
+            db.session.commit()
+
         return place
 
     def get_place(self, place_id):
@@ -87,23 +89,28 @@ class HBnBFacade:
 
     # REVIEWS
     def create_review(self, review_data):
-        user = self.user_repo.get(review_data['user_id'])
+        user_id  = review_data.pop('user_id')
+        place_id = review_data.pop('place_id')
+
+        user = self.user_repo.get(user_id)
         if not user:
             raise KeyError('Invalid input data')
-        del review_data['user_id']
-        review_data['user'] = user
 
-        place = self.place_repo.get(review_data['place_id'])
+        place = self.place_repo.get(place_id)
         if not place:
             raise KeyError('Invalid input data')
-        del review_data['place_id']
-        review_data['place'] = place
 
         review = Review(**review_data)
+        review.user_id  = user_id
+        review.place_id = place_id
         self.review_repo.add(review)
-        user.add_review(review)
-        place.add_review(review)
         return review
+
+    def get_review_by_user_and_place(self, user_id, place_id):
+        return Review.query.filter_by(
+            user_id=user_id,
+            place_id=place_id
+        ).first()
 
     def get_review(self, review_id):
         return self.review_repo.get(review_id)
@@ -123,8 +130,4 @@ class HBnBFacade:
 
     def delete_review(self, review_id):
         review = self.review_repo.get(review_id)
-        user = self.user_repo.get(review.user.id)
-        place = self.place_repo.get(review.place.id)
-        user.delete_review(review)
-        place.delete_review(review)
         self.review_repo.delete(review_id)

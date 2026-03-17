@@ -7,12 +7,12 @@ class User(BaseModel):
     __tablename__ = 'users'
 
     first_name = db.Column(db.String(50), nullable=False)
-    last_name = db.Column(db.String(50), nullable=False)
-    email = db.Column(db.String(120), nullable=False, unique=True)
-    password = db.Column(db.String(128), nullable=False)
-    is_admin = db.Column(db.Boolean, default=False)
+    last_name  = db.Column(db.String(50), nullable=False)
+    email      = db.Column(db.String(120), nullable=False, unique=True)
+    password   = db.Column(db.String(128), nullable=False)
+    is_admin   = db.Column(db.Boolean, default=False)
 
-    places = db.relationship('Place', back_populates='owner_rel', lazy=True)
+    places  = db.relationship('Place', back_populates='owner_rel', lazy=True)
     reviews = db.relationship('Review', back_populates='user_rel', lazy=True)
 
     emails = set()
@@ -20,10 +20,10 @@ class User(BaseModel):
     def __init__(self, first_name, last_name, email, password, is_admin=False):
         super().__init__()
         self.first_name = first_name
-        self.last_name = last_name
-        self.email = email
-        self.is_admin = is_admin
-        self.password = password
+        self.last_name  = last_name
+        self.email      = email
+        self.is_admin   = is_admin
+        self.password   = password
 
     @validates('first_name')
     def validate_first_name(self, key, value):
@@ -60,15 +60,6 @@ class User(BaseModel):
             raise TypeError("Is Admin must be a boolean")
         return value
 
-    def add_place(self, place):
-        self.places.append(place)
-
-    def add_review(self, review):
-        self.reviews.append(review)
-
-    def delete_review(self, review):
-        self.reviews.remove(review)
-
     def hash_password(self, password):
         self.password = bcrypt.generate_password_hash(password).decode('utf-8')
 
@@ -77,8 +68,8 @@ class User(BaseModel):
 
     def to_dict(self):
         return {
-            'id': self.id,
+            'id':         self.id,
             'first_name': self.first_name,
-            'last_name': self.last_name,
-            'email': self.email
+            'last_name':  self.last_name,
+            'email':      self.email
         }

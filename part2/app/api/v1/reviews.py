@@ -26,12 +26,18 @@ class ReviewList(Resource):
             return {'error': 'Place not found'}, 400
         if place.owner_id == current_user_id:
             return {'error': 'You cannot review your own place'}, 400
+
+        # Can't review same place twice
+        existing = facade.get_review_by_user_and_place(current_user_id, review_data['place_id'])
+        if existing:
+            return {'error': 'You have already reviewed this place'}, 400
+
         try:
             new_review = facade.create_review(review_data)
             return new_review.to_dict(), 201
         except Exception as e:
             return {'error': str(e)}, 400
-
+        
     @api.response(200, 'List of reviews retrieved successfully')
     def get(self):
         """Retrieve a list of all reviews"""
