@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBnB - Available Places</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="icon.png" type="image/png">
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="HBnB Logo" class="logo">
+        <nav>
+            <a href="login.html" id="login-link" class="login-button">Login</a>
+        </nav>
+    </header>
+
+    <main>
+        <h1 class="page-title">Available Places</h1>
+
+        <section id="filter">
+            <label for="price-filter">Max Price:</label>
+            <select id="price-filter">
+                <option value="all">All</option>
+                <option value="10">$10</option>
+                <option value="50">$50</option>
+                <option value="100">$100</option>
+            </select>
+        </section>
+
+        <section id="places-list">
+            <!-- Place cards will be populated dynamically -->
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 HBnB . All rights reserved.</p>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,357 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f4f4;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ─── HEADER ─── */
+header {
+    background-color: #f5a623;
+    padding: 0.8rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    height: 40px;
+    width: auto;
+}
+
+.login-button {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    text-decoration: underline;
+}
+
+/* ─── FOOTER ─── */
+footer {
+    background-color: #f5a623;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.9rem;
+    margin-top: auto;
+}
+
+/* ─── MAIN ─── */
+main {
+    flex: 1;
+    padding: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* ─── PAGE TITLE ─── */
+h1.page-title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: #222;
+}
+
+/* ─── FILTER ─── */
+#filter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+#filter label {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+#price-filter {
+    padding: 0.3rem 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+/* ─── PLACES LIST ─── */
+#places-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    justify-content: center;
+}
+
+/* ─── PLACE CARD ─── */
+.place-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 20px;
+    width: 280px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+}
+
+.place-card h2 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.6rem;
+    color: #222;
+}
+
+.place-card p {
+    font-size: 0.95rem;
+    color: #444;
+    margin-bottom: 1rem;
+}
+
+.details-button {
+    display: inline-block;
+    background-color: #f5a623;
+    color: #fff;
+    padding: 0.6rem 1.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.95rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.details-button:hover {
+    background-color: #e09410;
+}
+
+/* ─── PLACE DETAILS ─── */
+.place-details {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.place-info {
+    padding: 1rem;
+    line-height: 2.2;
+    font-size: 1rem;
+    color: #333;
+}
+
+.place-info p strong {
+    font-weight: bold;
+}
+
+/* ─── REVIEWS ─── */
+#reviews h2 {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin: 1.5rem 0 1rem 0;
+    color: #222;
+}
+
+.review-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 20px 0;
+}
+
+.review-card p {
+    font-size: 0.95rem;
+    color: #333;
+    margin-bottom: 0.4rem;
+    line-height: 1.7;
+}
+
+.review-card strong {
+    font-weight: bold;
+    color: #222;
+}
+
+/* ─── ADD REVIEW SECTION ─── */
+.add-review {
+    margin-top: 2rem;
+}
+
+.add-review h2 {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #222;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.form label {
+    font-weight: bold;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.form textarea,
+.form select,
+.form input[type="text"],
+.form input[type="email"],
+.form input[type="password"] {
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    width: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.form textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form textarea:focus,
+.form select:focus,
+.form input:focus {
+    outline: none;
+    border-color: #f5a623;
+}
+
+.form button[type="submit"] {
+    background-color: #f5a623;
+    color: #fff;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+    width: 100%;
+}
+
+.form button[type="submit"]:hover {
+    background-color: #e09410;
+}
+
+/* ─── ADD REVIEW PAGE TITLE ─── */
+.review-page-title {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    color: #222;
+}
+
+/* ─── LOGIN FORM ─── */
+#login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    max-width: 500px;
+    margin: 3rem auto;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+#login-form h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #222;
+    margin-bottom: 0.5rem;
+}
+
+#login-form label {
+    font-weight: bold;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+#login-form input {
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    width: 100%;
+}
+
+#login-form input:focus {
+    outline: none;
+    border-color: #f5a623;
+}
+
+#login-form button[type="submit"] {
+    background-color: #f5a623;
+    color: #fff;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#login-form button[type="submit"]:hover {
+    background-color: #e09410;
+}
+
+/* ─── MESSAGES ─── */
+.message {
+    text-align: center;
+    padding: 0.7rem;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.message.success {
+    background: #d4edda;
+    color: #155724;
+}
+
+.message.error {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 700px) {
+    #places-list {
+        flex-direction: column;
+        align-items: center;
+    }
+    .place-card {
+        width: 100%;
+        margin: 10px 0;
+    }
+    main {
+        padding: 1rem;
+    }
+}
